@@ -23,7 +23,6 @@ class MIDIProcessor:
                 if len(instrument.notes) == max_instrument_note_length:
                     maxVel, maxPitch, maxDuration = 0.0, 0.0, 0.0
                     for note in instrument.notes:
-
                         duration = note.end - note.start
                         if (duration > maxDuration):
                             maxDuration = duration
@@ -53,6 +52,7 @@ class MIDIProcessor:
 
         return encoded_song
 
+    # TODO: Check SONG OR ALL?
     def label_encoder(self, note, song):
         d = song.max_duration / 5
         DurationLabel = int((note.end - note.start) / d)
