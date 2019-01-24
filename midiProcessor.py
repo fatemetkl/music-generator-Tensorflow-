@@ -1,10 +1,10 @@
 import pretty_midi
 import numpy as np
 from song import Song
-
+from sklearn.preprocessing import OneHotEncoder
 
 class MIDIProcessor:
-
+    
     def __init__(self, size):
         self.final_list = np.zeros((size, 1))
         self.final_list = np.empty((0, 1))
@@ -55,12 +55,26 @@ class MIDIProcessor:
     # TODO: Check SONG OR ALL?
     def label_encoder(self, note, song):
         d = song.max_duration / 5
-        DurationLabel = int((note.end - note.start) / d)
+        DurationLabel = int((note.end - note.start) % d)
         v = song.max_vel / 5
-        VelocityLabel = int(note.velocity / v)
+        VelocityLabel = int(note.velocity % v)
         p = song.max_pitch / 5
-        PitchLabel = int(note.pitch / p)
-        return ([DurationLabel, VelocityLabel, PitchLabel])
+        PitchLabel = int(note.pitch % p)
+        return (DurationLabel*10+VelocityLabel*100+PitchLabel)
 
     def write(self, song):
         pass
+
+    def data_prep(self ,song):
+        chars=60
+        one_hot=OneHotEncoder()
+        one_hot.fit(np.linspace(0,444-1,444).reshape(-1,1))
+        x=one_hot.transform(np.array(self.encode_song(song)[:60])).reshape(-1,1).toarray()
+        final_vector=np.zeros((60,chars))
+        if(x.shape[0]>=chars):
+            final_vector[:60,:chars]=x[:60,:chars]
+        else:
+            final_vector[:x.shape[0],:chars]=x
+
+        return final_vector        
+
