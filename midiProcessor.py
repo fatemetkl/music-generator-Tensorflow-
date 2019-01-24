@@ -8,6 +8,8 @@ class MIDIProcessor:
         self.final_list = np.array(0)
         self.size = size
 
+      
+
     def read_all_files(self):
         for i in (1, self.size):
             song = pretty_midi.PrettyMIDI("data/{}.mid".format(i))
@@ -20,6 +22,7 @@ class MIDIProcessor:
                 if len(instrument.notes) == max_instrument_note_length:
                     maxVel, maxPitch, maxDuration = 0.0, 0.0, 0.0
                     for note in instrument.notes:
+                        
                         duration = note.end - note.start
                         if (duration > maxDuration):
                             maxDuration = duration
@@ -28,6 +31,7 @@ class MIDIProcessor:
                         if (note.pitch > maxPitch):
                             maxPitch = note.pitch
                     break
+            print([maxVel, maxPitch, maxDuration])
             np.append(self.final_list, [song, maxVel, maxPitch, maxDuration])
 
     def encode_song(self, song):
@@ -45,6 +49,7 @@ class MIDIProcessor:
                     for n in instrument.notes:
                         encoded_song.append(n)
                     break
+                    
 
         return encoded_song
 
