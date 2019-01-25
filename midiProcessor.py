@@ -60,7 +60,9 @@ class MIDIProcessor:
         VelocityLabel = int(note.velocity % v)
         p = song.max_pitch / 5
         PitchLabel = int(note.pitch % p)
-        return (DurationLabel*10+VelocityLabel*100+PitchLabel)
+        finalval=DurationLabel*10+VelocityLabel*100+PitchLabel
+        
+        return ()
 
     def write(self, song):
         pass
