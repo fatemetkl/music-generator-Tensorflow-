@@ -9,7 +9,12 @@ midiprocessor = MIDIProcessor(1)
 midiprocessor.read_all_files()
 
 for song in midiprocessor.final_list.tolist():
-    print(midiprocessor.data_prep(song))
+    l = midiprocessor.data_prep(song)
+    print("SHAPE:", l.shape)
+    print(l)
+    # for i in l.tolist():
+        # if i == 1:
+            # print(i)
 
 
 
