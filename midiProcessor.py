@@ -88,7 +88,3 @@ class MIDIProcessor:
                
             except:
                 print(song, i)
-
-           
-
-                
