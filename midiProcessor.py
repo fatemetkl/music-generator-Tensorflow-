@@ -4,15 +4,16 @@ from song import Song
 from sklearn.preprocessing import OneHotEncoder
 import tensorflow as tf
 
+
 class MIDIProcessor:
 
     def __init__(self, size):
-        self.final_list = np.zeros((size, 1))
-        self.final_list = np.empty((0, 1))
+        self.all_songs_objects = np.zeros((size, 1))
+        self.all_songs_objects = np.empty((0, 1))
         self.size = size
         self.one_hot_encoder = OneHotEncoder(categories='auto')
         self.one_hot_encoder.fit(np.linspace(0, 443, 444).reshape(-1, 1))
-        self.final_input=[]
+        self.final_network_input = np.zeros((size,1))
 
     def read_all_files(self):
         for i in range(1, self.size + 1):
@@ -37,7 +38,7 @@ class MIDIProcessor:
                     break
 
             new_song = Song(song, max_instrument_note_length, maxVel, maxPitch, maxDuration)
-            self.final_list = np.append(self.final_list, [new_song])
+            self.all_songs_objects = np.append(self.all_songs_objects, [new_song])
 
     def encode_song(self, song):
         encoded_song = []
@@ -74,28 +75,14 @@ class MIDIProcessor:
         chars = 1
         # one_hot.fit(np.linspace(0, 444 - 1, 444).reshape(-1, 1))
         # print(np.array(self.encode_song(song)[:60]).reshape(-1, 1))
-        indices=self.encode_song(song)[:60]
+        indices = self.encode_song(song)[:60]
         depth = 444
-        x=tf.one_hot(indices, depth)
-        #x = self.one_hot_encoder.fit_transform(np.array(self.encode_song(song)[:60])).reshape(-1, 1).toarray()
-        
-        # final_vector = np.zeros((60, chars))
-        # if (x.shape[0] >= chars):
-        #     final_vector[:60, :chars] = x[:60, :chars]
-        # else:
-        #     final_vector[:x.shape[0], :chars] = x
-
+        x = tf.one_hot(indices, depth)
         return x
 
-
     def prep_all(self):
-        for i, song in enumerate(self.final_list):
+        for i, song in enumerate(self.all_songs_objects):
             try:
-                self.final_input.append(self.data_prep(song))
+                np.append(self.final_network_input, self.data_prep(song))
             except:
-                print(song,i)
-
-        self.final_input=np.array(self.final_input) 
-        print(len(self.final_input))           
-
-
+                print(song, i)
