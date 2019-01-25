@@ -14,6 +14,7 @@ class MIDIProcessor:
         self.one_hot_encoder = OneHotEncoder(categories='auto')
         self.one_hot_encoder.fit(np.linspace(0, 443, 444).reshape(-1, 1))
         self.final_network_input = np.zeros((size,1))
+        self.final_network_input = np.empty((0, 1))
 
     def read_all_files(self):
         for i in range(1, self.size + 1):
@@ -83,6 +84,11 @@ class MIDIProcessor:
     def prep_all(self):
         for i, song in enumerate(self.all_songs_objects):
             try:
-                np.append(self.final_network_input, self.data_prep(song))
+                self.final_network_input = np.append(self.final_network_input, self.data_prep(song))
+               
             except:
                 print(song, i)
+
+           
+
+                
