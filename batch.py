@@ -43,4 +43,6 @@ class BatchProcessor:
 
         self.last_iteration += 1
         return encoded_batch
-    
+
+    def reset_iterator_for_next_epoch(self):
+        self.last_iteration = 0
