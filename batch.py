@@ -26,6 +26,7 @@ class BatchProcessor:
         encoded_batch = []
         for item in batch:
             encoded_batch.append(self.midi_processor.one_hot_encode(item))
+
         return encoded_batch
 
     def print_batch(self, batch):

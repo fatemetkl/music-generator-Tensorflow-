@@ -31,7 +31,6 @@ class MIDIProcessor:
                     max_instrument_note_length = len(instrument.notes)
             for instrument in song.instruments:
                 if len(instrument.notes) == max_instrument_note_length:
-                    maxVel, maxPitch, maxDuration = 0.0, 0.0, 0.0
                     for note in instrument.notes:
                         duration = note.end - note.start
                         if (duration > maxDuration):
@@ -47,10 +46,12 @@ class MIDIProcessor:
 
     def one_hot_encode(self, song):
         indices = self.encode_song(song)[:60]
+        print(indices)
         n_labels = len(indices)
         n_unique_labels = 444
         one_hot_encoded_song = np.zeros((n_labels, n_unique_labels))
         one_hot_encoded_song[np.arange(n_labels), indices] = 1
+
         return one_hot_encoded_song
 
     def encode_song(self, song):
@@ -71,13 +72,13 @@ class MIDIProcessor:
 
     # TODO: Check SONG OR ALL?
     def label_encoder(self, note, song):
-        d = song.max_duration / 5
-        DurationLabel = int((note.end - note.start) % d)
-        v = song.max_vel / 5
-        VelocityLabel = int(note.velocity % v)
-        p = song.max_pitch / 5
-        PitchLabel = int(note.pitch % p)
-        return DurationLabel * 10 + VelocityLabel * 100 + PitchLabel
+        d = song.max_duration / 4
+        DurationLabel = int((note.end - note.start) / d)
+        v = song.max_vel / 4
+        VelocityLabel = int(note.velocity / v)
+        p = song.max_pitch / 4
+        PitchLabel = int(note.pitch / p)
+        return DurationLabel * 10 + VelocityLabel * 1 + PitchLabel*100
 
     def write(self, song):
         pass
