@@ -1,11 +1,11 @@
-import pretty_midi 
-from midiProcessor import MIDIProcessor
-import numpy as np
-import tensorflow as tf
+from batch import BatchProcessor
 
 
-midiprocessor = MIDIProcessor(2)
+batch_processor = BatchProcessor(batch_size=20, dataset_size=2)
 
-midiprocessor.read_all_files()
+for iteration in range(0, batch_processor.max_iteration_num):
+    batch_processor.midi_processor.read_files(iteration * batch_processor.batch_size,
+                              (iteration + 1) * batch_processor.batch_size)
 
-midiprocessor.prep_all()
+    batch = batch_processor.get_batch(iteration)
+    encoded_batch = batch_processor.hot_encode_batch(batch)

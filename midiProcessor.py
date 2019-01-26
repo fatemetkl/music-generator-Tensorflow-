@@ -13,12 +13,15 @@ class MIDIProcessor:
         self.size = size
         self.one_hot_encoder = OneHotEncoder(categories='auto')
         self.one_hot_encoder.fit(np.linspace(0, 443, 444).reshape(-1, 1))
-        self.final_network_input = np.zeros((size,1))
+        self.final_network_input = np.zeros((size, 1))
         self.final_network_input = np.empty((0, 1))
 
     def read_files(self, start_file, end_file):
         for i in range(start_file, end_file):
-            song = pretty_midi.PrettyMIDI("data/{}.mid".format(i))
+            try:
+                song = pretty_midi.PrettyMIDI("data/{}.mid".format(i))
+            except:
+                break
 
             maxVel, maxPitch, maxDuration = 0.0, 0.0, 0.0
             max_instrument_note_length = 0
@@ -40,6 +43,12 @@ class MIDIProcessor:
 
             new_song = Song(song, max_instrument_note_length, maxVel, maxPitch, maxDuration)
             self.all_songs_objects = np.append(self.all_songs_objects, [new_song])
+
+    def one_hot_encode(self, song):
+        indices = self.encode_song(song)[:60]
+        depth = 444
+        x = tf.one_hot(indices, depth)
+        return x
 
     def encode_song(self, song):
         encoded_song = []
@@ -69,16 +78,3 @@ class MIDIProcessor:
 
     def write(self, song):
         pass
-
-    def one_hot_encode(self, song):
-        indices = self.encode_song(song)[:60]
-        depth = 444
-        x = tf.one_hot(indices, depth)
-        return x
-
-    def add_to_input_list(self):
-        for i, song in enumerate(self.all_songs_objects):
-            try:
-                self.final_network_input = np.append(self.final_network_input, self.one_hot_encode(song))
-            except:
-                print(song, i)
