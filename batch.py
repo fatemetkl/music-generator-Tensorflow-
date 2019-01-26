@@ -13,7 +13,7 @@ class BatchProcessor:
         self.batches_dict = {}
 
     def get_batch(self, iteration_num):
-        batch = np.zeros((self.batch_size, 1))
+        batch = np.zeros((0, 1))
         for item in range(iteration_num * self.batch_size, (iteration_num + 1) * self.batch_size):
             if len(self.midi_processor.all_songs_objects) <= item:
                 break
