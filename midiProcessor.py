@@ -45,7 +45,6 @@ class MIDIProcessor:
             new_song = Song(song, max_instrument_note_length, maxVel, maxPitch, maxDuration)
             print(new_song.max_vel)
             self.all_songs_objects = np.append(self.all_songs_objects, [new_song])
-            print("SHAPEEE",self.all_songs_objects.shape)
 
     def one_hot_encode(self, song):
         indices = self.encode_song(song)[:60]

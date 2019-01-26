@@ -18,10 +18,8 @@ class BatchProcessor:
             if len(self.midi_processor.all_songs_objects) <= item:
                 break
             else:
-                print("item is", item)
                 batch = np.append(batch, self.midi_processor.all_songs_objects[item])
         self.batches_dict[iteration_num] = batch
-        print("dic:", self.batches_dict)
         return batch
 
     def hot_encode_batch(self, batch):
