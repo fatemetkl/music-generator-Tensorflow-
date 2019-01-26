@@ -11,6 +11,7 @@ class BatchProcessor:
         self.max_iteration_num = math.ceil(self.total_size / batch_size)
         self.has_leftover_batch = False if self.max_iteration_num == int(self.total_size / batch_size) else True
         self.batches_dict = {}
+        self.last_iteration = 0
 
     def get_batch(self, iteration_num):
         batch = np.zeros((0, 1))
@@ -32,3 +33,14 @@ class BatchProcessor:
     def print_batch(self, batch):
         for item in batch.tolist():
             print(item)
+
+    def get_next_batch(self):
+        self.midi_processor.read_files(self.last_iteration * self.batch_size,
+                                       (self.last_iteration + 1) * self.batch_size)
+
+        batch = self.get_batch(self.last_iteration)
+        encoded_batch = self.hot_encode_batch(batch)
+
+        self.last_iteration += 1
+        return encoded_batch
+    
