@@ -2,7 +2,7 @@ import pretty_midi
 import numpy as np
 from song import Song
 from sklearn.preprocessing import OneHotEncoder
-import tensorflow as tf
+# import tensorflow as tf
 
 
 class MIDIProcessor:
@@ -17,7 +17,8 @@ class MIDIProcessor:
         self.final_network_input = np.empty((0, 1))
 
     def read_files(self, start_file, end_file):
-        for i in range(start_file, end_file):
+        print("start = ", start_file, "end =", end_file)
+        for i in range(start_file+1, end_file):
             try:
                 song = pretty_midi.PrettyMIDI("data/{}.mid".format(i))
             except:
@@ -42,7 +43,9 @@ class MIDIProcessor:
                     break
 
             new_song = Song(song, max_instrument_note_length, maxVel, maxPitch, maxDuration)
+            print(new_song.max_vel)
             self.all_songs_objects = np.append(self.all_songs_objects, [new_song])
+            print("SHAPEEE",self.all_songs_objects.shape)
 
     def one_hot_encode(self, song):
         indices = self.encode_song(song)[:60]
