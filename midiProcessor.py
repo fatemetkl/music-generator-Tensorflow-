@@ -47,9 +47,11 @@ class MIDIProcessor:
 
     def one_hot_encode(self, song):
         indices = self.encode_song(song)[:60]
-        depth = 444
-        x = tf.one_hot(indices, depth)
-        return x
+        n_labels = len(indices)
+        n_unique_labels = 444
+        one_hot_encoded_song = np.zeros((n_labels, n_unique_labels))
+        one_hot_encoded_song[np.arange(n_labels), indices] = 1
+        return one_hot_encoded_song
 
     def encode_song(self, song):
         encoded_song = []
