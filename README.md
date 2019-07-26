@@ -13,7 +13,7 @@ MIDI files (we used The Lakh MIDI Dataset v0.1)
 writing.
 MIDI file structure looks like this:
 
-<img src="images/image1.png" width=150 >
+<img src="images/image1.png" width=550 >
                             
 • As mentioned in the chart , we
 see that each song has multiple instruments
@@ -42,7 +42,7 @@ variables mentioned above and splitted the notes
 according to their distribution of all notes in that
 song.
 
-<img src="images/image2.png" width=150 >
+<img src="images/image2.png" width=550 >
 
 ### Batches
 • Instead of loading all the training dataset at once,
@@ -63,7 +63,7 @@ so we chose LSTM.
 
 ### Model – encoder decoder
 
-<img src="images/image3.png" width=150 >
+<img src="images/image3.png" width=550 >
 
 ### Good things about LSTM
 • It can be difficult to train standard RNNs to solve
@@ -88,9 +88,9 @@ new networks as well.
 • TF’s syntax is harder than Keras and might be
 more confusing.
 
-<img src="images/image4.png" width=150 >
+<img src="images/image4.png" width=550 >
 
-<img src="images/image5.png" width=150 >
+<img src="images/image5.png" width=550 >
 
 
 
